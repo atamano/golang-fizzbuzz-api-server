@@ -1,0 +1,16 @@
+FROM golang:alpine
+RUN apk update && \
+    apk add curl \
+            git \
+            bash \
+            make \
+            ca-certificates && \
+    rm -rf /var/cache/apk/*
+
+WORKDIR /app
+
+COPY . .
+RUN go mod download
+RUN go mod verify
+
+CMD ["go", "run", "cmd/server/main.go"]
