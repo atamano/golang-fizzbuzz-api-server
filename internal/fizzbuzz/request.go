@@ -9,8 +9,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-//PostRequest Post request parameters
-type PostRequest struct {
+//postRequest Post request parameters
+type postRequest struct {
 	Int1  int    `json:"int1" binding:"required"`
 	Int2  int    `json:"int2" binding:"required"`
 	Limit int    `json:"limit" binding:"required"`
@@ -19,7 +19,7 @@ type PostRequest struct {
 }
 
 //Validate request
-func (a PostRequest) Validate() error {
+func (a postRequest) Validate() error {
 	return validation.ValidateStruct(&a,
 		validation.Field(&a.Int1, validation.Required, validation.Min(1), validation.Max(a.Limit)),
 		validation.Field(&a.Int2, validation.Required, validation.Min(1), validation.Max(a.Limit)),
@@ -29,8 +29,8 @@ func (a PostRequest) Validate() error {
 	)
 }
 
-//GetRequestKey for unique key
-func (a PostRequest) GetRequestKey() string {
+//ToStr for unique key
+func (a postRequest) ToStr() string {
 
 	// to avoid injection and separator character in params
 	str1 := base64.StdEncoding.EncodeToString([]byte(a.Str1))
@@ -40,7 +40,7 @@ func (a PostRequest) GetRequestKey() string {
 }
 
 //ToJSON struct to json
-func (a PostRequest) ToJSON() []byte {
+func (a postRequest) ToJSON() []byte {
 
 	b, err := json.Marshal(a)
 

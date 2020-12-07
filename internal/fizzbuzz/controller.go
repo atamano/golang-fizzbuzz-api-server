@@ -20,7 +20,7 @@ func RegisterHandlers(routerGroup *gin.RouterGroup, service Service, statsServic
 }
 
 func (r controler) post(c *gin.Context) {
-	var params PostRequest
+	var params postRequest
 
 	if err := c.ShouldBindJSON(&params); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -34,6 +34,6 @@ func (r controler) post(c *gin.Context) {
 	// Could be handled with pub/sub workers on larger app
 	r.statsService.IncrementRequestCount(params)
 
-	res := r.service.Compute(&params)
+	res := r.service.Compute(params)
 	c.JSON(http.StatusOK, gin.H{"result": res})
 }

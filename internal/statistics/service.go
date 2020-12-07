@@ -1,11 +1,13 @@
 package statistics
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/atamano/fizz-buzz/pkg/request"
+)
 
 //Service for fizzbuzz
 type Service interface {
-	IncrementRequestCount(request StatsRequest) (*FizzbuzzRequestsStats, error)
-	GetMostUsedRequest() (*FizzbuzzRequestsStats, error)
+	IncrementRequestCount(request request.Request) (fizzbuzzRequestsStats, error)
+	GetMostUsedRequest() (fizzbuzzRequestsStats, error)
 }
 
 type service struct {
@@ -18,26 +20,19 @@ func NewService(repository Repository) Service {
 }
 
 //StatsRequest interface
-type StatsRequest interface {
-	GetRequestKey() string
-	ToJSON() []byte
-}
 
-func (s service) IncrementRequestCount(request StatsRequest) (*FizzbuzzRequestsStats, error) {
-	key := request.GetRequestKey()
+func (s service) IncrementRequestCount(request request.Request) (fizzbuzzRequestsStats, error) {
+	key := request.ToStr()
 	params := request.ToJSON()
-	result, err := s.repository.Get(key)
+	result, err := s.repository.get(key)
 	if err == nil {
-		result, err = s.repository.Increment(key)
+		result, err = s.repository.increment(key)
 	} else {
-		result, err = s.repository.Create(key, params)
-	}
-	if err != nil {
-		logrus.WithError(err)
+		result, err = s.repository.create(key, params)
 	}
 	return result, err
 }
 
-func (s service) GetMostUsedRequest() (*FizzbuzzRequestsStats, error) {
-	return s.repository.GetMostUsedRequest()
+func (s service) GetMostUsedRequest() (fizzbuzzRequestsStats, error) {
+	return s.repository.getMostUsedRequest()
 }

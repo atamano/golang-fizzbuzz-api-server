@@ -3,10 +3,10 @@ package database
 import (
 	"fmt"
 
-	"github.com/go-pg/pg"
+	"github.com/go-pg/pg/v10"
+	"github.com/go-pg/pg/v10/orm"
 )
 
-//Config for database
 type Config struct {
 	Host     string
 	Port     int
@@ -16,14 +16,22 @@ type Config struct {
 	Debug    bool
 }
 
+type DB struct {
+	db *pg.DB
+}
+
+type Query interface {
+	orm.DB
+	Begin() (*pg.Tx, error)
+}
+
 func checkConnection(db *pg.DB) error {
 	var n int
 	_, err := db.QueryOne(pg.Scan(&n), "SELECT 1")
 	return err
 }
 
-// Connect returns a postgres connection pool.
-func Connect(config Config) (*pg.DB, error) {
+func Connect(config Config) (DB, error) {
 
 	db := pg.Connect(&pg.Options{
 		User:     config.User,
@@ -33,12 +41,20 @@ func Connect(config Config) (*pg.DB, error) {
 	})
 
 	if err := checkConnection(db); err != nil {
-		return nil, err
+		return DB{}, err
 	}
 
 	if config.Debug {
-		db.AddQueryHook(&sqlHook{})
+		db.AddQueryHook(sqlHook{})
 	}
 
-	return db, nil
+	return DB{db}, nil
+}
+
+func (d DB) Close() {
+	d.db.Close()
+}
+
+func (d DB) DB() Query {
+	return d.db
 }

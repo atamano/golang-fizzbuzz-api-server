@@ -25,15 +25,15 @@ test-cover: test ## run unit tests and show test coverage information
 
 .PHONY: migration-init
 migration-init: ## add migration table
-	${EXEC} go run database/migrate/*.go init
+	${EXEC} go run ./cmd/migrate/*.go init
 
 .PHONY: migration-up
 migration-up: ## run mirations
-	${EXEC} go run ./database/migrate/*.go up
+	${EXEC} go run ./cmd/migrate/*.go up
 
 .PHONY: migration-down
 migration-down: ## down mirations
-	${EXEC} go run ./database/migrate/*.go down
+	${EXEC} go run ./cmd/migrate/*.go down
 
 .PHONY: restart-server
 restart-server: ## restart server

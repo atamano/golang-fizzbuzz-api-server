@@ -7,7 +7,7 @@ import (
 
 //Service for fizzbuzz
 type Service interface {
-	Compute(args *PostRequest) string
+	Compute(args postRequest) string
 }
 
 type service struct{}
@@ -18,8 +18,7 @@ func NewService() Service {
 }
 
 //Compute fizzbuzz
-func (s service) Compute(params *PostRequest) string {
-
+func (s service) Compute(params postRequest) string {
 	result := make([]string, params.Limit)
 
 	for i := 1; i <= params.Limit; i++ {

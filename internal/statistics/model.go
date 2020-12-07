@@ -3,7 +3,7 @@ package statistics
 import "encoding/json"
 
 //FizzbuzzRequestsStats counts requests
-type FizzbuzzRequestsStats struct {
+type fizzbuzzRequestsStats struct {
 	tableName struct{}        `pg:"fizzbuzz_requests_stats"`
 	ID        int             `pg:"id" json:"id"`
 	Key       string          `pg:"key,unique" json:"key"`

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/atamano/fizz-buzz/database"
-	"github.com/go-pg/migrations"
+	"github.com/atamano/fizz-buzz/pkg/database"
+	"github.com/atamano/fizz-buzz/pkg/logger"
+	"github.com/go-pg/migrations/v8"
 	"github.com/kelseyhightower/envconfig"
-	"github.com/sirupsen/logrus"
 )
 
 const usageText = `This program runs command on the db. Supported commands are:
@@ -27,7 +27,7 @@ func newConfig() database.Config {
 	var c database.Config
 
 	if err := envconfig.Process("database", &c); err != nil {
-		logrus.WithError(err).Fatal("Failed to parse database config")
+		logger.Fatal(err.Error(), "Failed to parse database config")
 	}
 	return c
 }
@@ -42,7 +42,7 @@ func main() {
 	if err != nil {
 		exitf(err.Error())
 	}
-	oldVersion, newVersion, err := migrations.Run(db, flag.Args()...)
+	oldVersion, newVersion, err := migrations.Run(db.DB(), flag.Args()...)
 	if err != nil {
 		exitf(err.Error())
 	}

@@ -1,49 +1,49 @@
 package statistics
 
 import (
-	"github.com/go-pg/pg"
+	"github.com/go-pg/pg/v10/orm"
 )
 
 //Repository for fizzbuzz
 type Repository interface {
-	Increment(key string) (*FizzbuzzRequestsStats, error)
-	GetMostUsedRequest() (*FizzbuzzRequestsStats, error)
-	Create(key string, params []byte) (*FizzbuzzRequestsStats, error)
-	Get(key string) (*FizzbuzzRequestsStats, error)
+	increment(key string) (fizzbuzzRequestsStats, error)
+	getMostUsedRequest() (fizzbuzzRequestsStats, error)
+	create(key string, params []byte) (fizzbuzzRequestsStats, error)
+	get(key string) (fizzbuzzRequestsStats, error)
 }
 
 type repository struct {
-	db *pg.DB
+	db orm.DB
 }
 
 //NewRepository initialization
-func NewRepository(db *pg.DB) Repository {
+func NewRepository(db orm.DB) Repository {
 	return repository{db}
 }
 
-func (r repository) Get(key string) (*FizzbuzzRequestsStats, error) {
-	requestStats := new(FizzbuzzRequestsStats)
-	err := r.db.Model(requestStats).Where("key = ?", key).Select()
+func (r repository) get(key string) (fizzbuzzRequestsStats, error) {
+	requestStats := fizzbuzzRequestsStats{}
+	err := r.db.Model(&requestStats).Where("key = ?", key).Select()
 
 	return requestStats, err
 }
 
-func (r repository) Increment(key string) (*FizzbuzzRequestsStats, error) {
-	requestStats := new(FizzbuzzRequestsStats)
-	_, err := r.db.Model(requestStats).Set("counter = counter + 1").Where("key = ?", key).Update()
+func (r repository) increment(key string) (fizzbuzzRequestsStats, error) {
+	requestStats := fizzbuzzRequestsStats{}
+	_, err := r.db.Model(&requestStats).Set("counter = counter + 1").Where("key = ?", key).Update()
 
 	return requestStats, err
 }
 
-func (r repository) Create(key string, params []byte) (*FizzbuzzRequestsStats, error) {
-	requestStats := FizzbuzzRequestsStats{Key: key, Params: []byte(params), Counter: 1}
+func (r repository) create(key string, params []byte) (fizzbuzzRequestsStats, error) {
+	requestStats := fizzbuzzRequestsStats{Key: key, Params: []byte(params), Counter: 1}
 	_, err := r.db.Model(&requestStats).Returning("*").Insert()
 
-	return &requestStats, err
+	return requestStats, err
 }
 
-func (r repository) GetMostUsedRequest() (*FizzbuzzRequestsStats, error) {
-	requestStats := new(FizzbuzzRequestsStats)
-	err := r.db.Model(requestStats).Order("counter DESC").First()
+func (r repository) getMostUsedRequest() (fizzbuzzRequestsStats, error) {
+	requestStats := fizzbuzzRequestsStats{}
+	err := r.db.Model(&requestStats).Order("counter DESC").First()
 	return requestStats, err
 }

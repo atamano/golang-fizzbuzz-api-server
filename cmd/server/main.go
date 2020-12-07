@@ -1,28 +1,28 @@
 package main
 
 import (
-	"github.com/atamano/fizz-buzz/database"
 	"github.com/atamano/fizz-buzz/internal/fizzbuzz"
 	"github.com/atamano/fizz-buzz/internal/statistics"
+	"github.com/atamano/fizz-buzz/pkg/database"
+	"github.com/atamano/fizz-buzz/pkg/logger"
 	"github.com/atamano/fizz-buzz/pkg/server"
 	"github.com/kelseyhightower/envconfig"
-	"github.com/sirupsen/logrus"
 )
 
-// Config of server
-type Config struct {
+// config of server
+type config struct {
 	server   server.Config
 	database database.Config
 }
 
-func newConfig() Config {
-	var c Config
+func newConfig() config {
+	var c config
 
 	if err := envconfig.Process("server", &c.server); err != nil {
-		logrus.WithError(err).Fatal("Failed to parse server config")
+		logger.Fatal(err.Error(), "Failed to parse server config")
 	}
 	if err := envconfig.Process("database", &c.database); err != nil {
-		logrus.WithError(err).Fatal("Failed to parse database config")
+		logger.Fatal(err.Error(), "Failed to parse database config")
 	}
 	return c
 }
@@ -33,14 +33,14 @@ func main() {
 
 	db, err := database.Connect(config.database)
 	if err != nil {
-		logrus.WithError(err).Fatal("Failed to connect database")
+		logger.Fatal(err.Error(), "Failed to connect database")
 	}
 	defer db.Close()
 
 	// On large apps https://github.com/google/wire could be used to handle dependency injection
 	fizzbuzzService := fizzbuzz.NewService()
 
-	statsRepository := statistics.NewRepository(db)
+	statsRepository := statistics.NewRepository(db.DB())
 	statsService := statistics.NewService(statsRepository)
 
 	v1 := server.NewGroup("/v1")
