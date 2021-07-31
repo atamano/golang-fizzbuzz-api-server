@@ -18,15 +18,15 @@ func NewService(repository Repository) Service {
 //StatsRequest interface
 
 func (s service) IncrementRequestCount(key string, params []byte) (fizzbuzzRequestsStats, error) {
-	result, err := s.repository.get(key)
+	result, err := s.repository.Get(key)
 	if err == nil {
-		result, err = s.repository.increment(key)
+		result, err = s.repository.Increment(key)
 	} else {
-		result, err = s.repository.create(key, params)
+		result, err = s.repository.Create(key, params)
 	}
 	return result, err
 }
 
 func (s service) GetMostUsedRequest() (fizzbuzzRequestsStats, error) {
-	return s.repository.getMostUsedRequest()
+	return s.repository.GetMostUsedRequest()
 }
