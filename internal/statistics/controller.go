@@ -3,7 +3,7 @@ package statistics
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/atamano/fizz-buzz/pkg/server"
 )
 
 type controler struct {
@@ -11,18 +11,18 @@ type controler struct {
 }
 
 //RegisterHandlers sets up the routing of the HTTP handlers.
-func RegisterHandlers(routerGroup *gin.RouterGroup, service Service) {
+func RegisterHandlers(routerGroup server.Router, service Service) {
 	res := controler{service}
 
 	routerGroup.GET("/stats", res.get)
 }
 
-func (r controler) get(c *gin.Context) {
+func (r controler) get(c *server.Context) {
 
 	stats, err := r.service.GetMostUsedRequest()
 
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Not found"})
+		c.JSON(http.StatusNotFound, map[string]interface{}{"error": "Not found"})
 		return
 	}
 	c.JSON(http.StatusOK, stats)

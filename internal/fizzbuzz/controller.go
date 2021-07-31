@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/atamano/fizz-buzz/internal/statistics"
-	"github.com/gin-gonic/gin"
+	"github.com/atamano/fizz-buzz/pkg/server"
 )
 
 type controler struct {
@@ -13,21 +13,21 @@ type controler struct {
 }
 
 //RegisterHandlers sets up the routing of the HTTP handlers.
-func RegisterHandlers(routerGroup *gin.RouterGroup, service Service, statsService statistics.Service) {
+func RegisterHandlers(routerGroup server.Router, service Service, statsService statistics.Service) {
 	res := controler{service, statsService}
 
 	routerGroup.POST("/fizzbuzz", res.post)
 }
 
-func (r controler) post(c *gin.Context) {
+func (r controler) post(c *server.Context) {
 	var params postRequest
 
 	if err := c.ShouldBindJSON(&params); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 		return
 	}
 	if err := params.Validate(); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 		return
 	}
 
@@ -35,5 +35,5 @@ func (r controler) post(c *gin.Context) {
 	r.statsService.IncrementRequestCount(params)
 
 	res := r.service.Compute(params)
-	c.JSON(http.StatusOK, gin.H{"result": res})
+	c.JSON(http.StatusOK, map[string]interface{}{"result": res})
 }

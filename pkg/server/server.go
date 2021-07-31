@@ -9,9 +9,9 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/atamano/fizz-buzz/pkg/logger"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 //Config for server
@@ -24,6 +24,11 @@ type Server struct {
 	Router *gin.Engine
 	config Config
 }
+
+type HandlerFunc func(interface{})
+
+type Router = gin.IRouter
+type Context = gin.Context
 
 func secureHeaders() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -42,7 +47,7 @@ func secureHeaders() gin.HandlerFunc {
 }
 
 //NewGroup returns a new group
-func (s *Server) NewGroup(groupPrefix string) *gin.RouterGroup {
+func (s *Server) NewGroup(groupPrefix string) Router {
 	return s.Router.Group(groupPrefix)
 }
 
@@ -56,7 +61,7 @@ func (s *Server) Run() {
 	go func() {
 		// service connections
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logrus.WithError(err).Fatal("listenAndServe failed")
+			logger.Fatal("listenAndServe failed", err.Error())
 		}
 	}()
 
@@ -64,29 +69,29 @@ func (s *Server) Run() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	logrus.Info("Shutdown Server ...")
+	logger.Info("Shutdown Server ...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		logrus.WithError(err).Fatal("Server Shutdown failed")
+		logger.Fatal("Server Shutdown failed", err.Error())
 	}
 
-	logrus.Info("Server exiting")
+	logger.Info("Server exiting")
 }
 
 //New server
-func New(config Config) *Server {
+func New(config Config) Server {
 	router := gin.Default()
 
 	router.Use(cors.Default())
 	router.Use(secureHeaders())
 
 	router.GET("/healthcheck", func(c *gin.Context) {
-		c.JSON(200, gin.H{
+		c.JSON(200, map[string]string{
 			"message": "ok",
 		})
 	})
 
-	return &Server{router, config}
+	return Server{router, config}
 }

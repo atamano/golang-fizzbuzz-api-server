@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/atamano/fizz-buzz/internal/statistics"
+	"github.com/atamano/fizz-buzz/pkg/logger"
 	"github.com/atamano/fizz-buzz/pkg/server"
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -51,7 +51,7 @@ func TestController(t *testing.T) {
 		req, _ := http.NewRequest("POST", "/fizzbuzz", bytes.NewReader(requestByte))
 		server.Router.ServeHTTP(w, req)
 
-		logrus.Info(w.Result())
+		logger.Info(w.Result())
 		assert.Equal(t, tc.httpStatus, w.Code)
 
 		err := json.Unmarshal([]byte(w.Body.String()), &response)

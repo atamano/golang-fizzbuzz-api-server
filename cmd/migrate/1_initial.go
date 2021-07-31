@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-
+	"github.com/atamano/fizz-buzz/pkg/logger"
 	"github.com/go-pg/migrations/v8"
 )
 
@@ -25,7 +24,7 @@ func init() {
 	}
 
 	migrations.Register(func(db migrations.DB) error {
-		fmt.Println("creating initial tables")
+		logger.Info("creating initial tables")
 		for _, q := range up {
 			_, err := db.Exec(q)
 			if err != nil {
@@ -34,7 +33,7 @@ func init() {
 		}
 		return nil
 	}, func(db migrations.DB) error {
-		fmt.Println("dropping initial tables")
+		logger.Info("dropping initial tables")
 		for _, q := range down {
 			_, err := db.Exec(q)
 			if err != nil {

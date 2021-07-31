@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/atamano/fizz-buzz/pkg/logger"
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/sirupsen/logrus"
 )
 
 //postRequest Post request parameters
@@ -45,7 +45,7 @@ func (a postRequest) ToJSON() []byte {
 	b, err := json.Marshal(a)
 
 	if err != nil {
-		logrus.WithError(err).Fatal("Cannot encode to json")
+		logger.Fatal("Cannot encode to json", err.Error())
 	}
 
 	return b

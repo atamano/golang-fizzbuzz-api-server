@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 
 	"github.com/atamano/fizz-buzz/pkg/database"
@@ -47,23 +46,19 @@ func main() {
 		exitf(err.Error())
 	}
 	if newVersion != oldVersion {
-		fmt.Printf("migrated from version %d to %d\n", oldVersion, newVersion)
+		logger.Infof("migrated from version %d to %d\n", oldVersion, newVersion)
 	} else {
-		fmt.Printf("version is %d\n", oldVersion)
+		logger.Infof("version is %d\n", oldVersion)
 	}
 }
 
 func usage() {
-	fmt.Print(usageText)
+	logger.Info(usageText)
 	flag.PrintDefaults()
 	os.Exit(2)
 }
 
-func errorf(s string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, s+"\n", args...)
-}
-
 func exitf(s string, args ...interface{}) {
-	errorf(s, args...)
+	logger.Errorf(s, args...)
 	os.Exit(1)
 }

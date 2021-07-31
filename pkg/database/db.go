@@ -32,7 +32,6 @@ func checkConnection(db *pg.DB) error {
 }
 
 func Connect(config Config) (DB, error) {
-
 	db := pg.Connect(&pg.Options{
 		User:     config.User,
 		Addr:     fmt.Sprintf("%s:%d", config.Host, config.Port),

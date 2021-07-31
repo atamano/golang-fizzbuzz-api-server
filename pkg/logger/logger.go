@@ -4,15 +4,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Logger interface to be used internaly
-type Logger interface {
-	Fatal(args ...interface{})
-	Debug(args ...interface{})
-	Info(args ...interface{})
-	Warn(args ...interface{})
-	Error(args ...interface{})
-}
-
 func Fatal(args ...interface{}) {
 	logrus.Fatal(args...)
 }
@@ -31,4 +22,24 @@ func Warn(args ...interface{}) {
 
 func Error(args ...interface{}) {
 	logrus.Error(args...)
+}
+
+func Fatalf(format string, args ...interface{}) {
+	logrus.Fatalf(format, args...)
+}
+
+func Debugf(format string, args ...interface{}) {
+	logrus.Debugf(format, args...)
+}
+
+func Infof(format string, args ...interface{}) {
+	logrus.Infof(format, args...)
+}
+
+func Warnf(format string, args ...interface{}) {
+	logrus.Warnf(format, args...)
+}
+
+func Errorf(format string, args ...interface{}) {
+	logrus.Errorf(format, args...)
 }

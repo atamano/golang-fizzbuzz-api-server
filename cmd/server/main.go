@@ -37,7 +37,6 @@ func main() {
 	}
 	defer db.Close()
 
-	// On large apps https://github.com/google/wire could be used to handle dependency injection
 	fizzbuzzService := fizzbuzz.NewService()
 
 	statsRepository := statistics.NewRepository(db.DB())
