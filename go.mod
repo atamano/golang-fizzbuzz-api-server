@@ -9,7 +9,7 @@ require (
 	github.com/codegangsta/envy v0.0.0-20141216192214-4b78388c8ce4 // indirect
 	github.com/codegangsta/gin v0.0.0-20171026143024-cafe2ce98974 // indirect
 	github.com/gin-contrib/cors v1.3.1
-	github.com/gin-gonic/gin v1.5.0
+	github.com/gin-gonic/gin v1.7.2
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-pg/migrations v6.7.3+incompatible
 	github.com/go-pg/migrations/v8 v8.1.0
