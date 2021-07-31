@@ -1,6 +1,7 @@
 package statistics
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/atamano/fizz-buzz/pkg/server"
@@ -14,6 +15,7 @@ type controler struct {
 func RegisterHandlers(routerGroup server.Router, service Service) {
 	res := controler{service}
 
+	fmt.Println("YES")
 	routerGroup.GET("/stats", res.get)
 }
 

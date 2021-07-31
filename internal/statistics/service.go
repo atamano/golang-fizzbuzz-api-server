@@ -1,12 +1,8 @@
 package statistics
 
-import (
-	"github.com/atamano/fizz-buzz/pkg/request"
-)
-
 //Service for fizzbuzz
 type Service interface {
-	IncrementRequestCount(request request.Request) (fizzbuzzRequestsStats, error)
+	IncrementRequestCount(rkey string, params []byte) (fizzbuzzRequestsStats, error)
 	GetMostUsedRequest() (fizzbuzzRequestsStats, error)
 }
 
@@ -21,9 +17,7 @@ func NewService(repository Repository) Service {
 
 //StatsRequest interface
 
-func (s service) IncrementRequestCount(request request.Request) (fizzbuzzRequestsStats, error) {
-	key := request.ToStr()
-	params := request.ToJSON()
+func (s service) IncrementRequestCount(key string, params []byte) (fizzbuzzRequestsStats, error) {
 	result, err := s.repository.get(key)
 	if err == nil {
 		result, err = s.repository.increment(key)

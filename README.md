@@ -54,7 +54,6 @@ $ make test
 ## Built With
 
 - [Gin](https://github.com/gin-gonic/gin) - Http framework
-- [Ozzo validation](https://github.com/go-ozzo/ozzo-validation) - Requests validator
 - [Go pg](https://github.com/go-pg/pg) - Golang ORM with focus on PostgreSQL features and performance
 - [Envconfig](https://github.com/kelseyhightower/envconfig) - Managing configuration data from environment variables
 - [Logrus](https://github.com/sirupsen/logrus) - Logger

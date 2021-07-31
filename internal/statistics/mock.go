@@ -1,10 +1,8 @@
 package statistics
 
-import "github.com/atamano/fizz-buzz/pkg/request"
-
 type statsMockService struct{}
 
-func (m statsMockService) IncrementRequestCount(request request.Request) (fizzbuzzRequestsStats, error) {
+func (m statsMockService) IncrementRequestCount(key string, params []byte) (fizzbuzzRequestsStats, error) {
 	return fizzbuzzRequestsStats{}, nil
 }
 

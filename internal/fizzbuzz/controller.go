@@ -26,13 +26,9 @@ func (r controler) post(c *server.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 		return
 	}
-	if err := params.Validate(); err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
-		return
-	}
 
 	// Could be handled with pub/sub workers on larger app
-	r.statsService.IncrementRequestCount(params)
+	r.statsService.IncrementRequestCount(params.ToStr(), params.ToBytes())
 
 	res := r.service.Compute(params)
 	c.JSON(http.StatusOK, map[string]interface{}{"result": res})

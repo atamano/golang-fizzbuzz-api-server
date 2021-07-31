@@ -6,27 +6,15 @@ import (
 	"fmt"
 
 	"github.com/atamano/fizz-buzz/pkg/logger"
-	validation "github.com/go-ozzo/ozzo-validation"
 )
 
 //postRequest Post request parameters
 type postRequest struct {
-	Int1  int    `json:"int1" binding:"required"`
-	Int2  int    `json:"int2" binding:"required"`
-	Limit int    `json:"limit" binding:"required"`
-	Str1  string `json:"str1" binding:"required"`
-	Str2  string `json:"str2" binding:"required"`
-}
-
-//Validate request
-func (a postRequest) Validate() error {
-	return validation.ValidateStruct(&a,
-		validation.Field(&a.Int1, validation.Required, validation.Min(1), validation.Max(a.Limit)),
-		validation.Field(&a.Int2, validation.Required, validation.Min(1), validation.Max(a.Limit)),
-		validation.Field(&a.Limit, validation.Required, validation.Min(1), validation.Max(100000)),
-		validation.Field(&a.Str1, validation.Required, validation.Length(1, 100)),
-		validation.Field(&a.Str2, validation.Required, validation.Length(1, 100)),
-	)
+	Int1  int    `json:"int1" binding:"required,gte=1,lt=10000"`
+	Int2  int    `json:"int2" binding:"required,gte=1,lt=10000"`
+	Limit int    `json:"limit" binding:"required,gte=1,lt=10000"`
+	Str1  string `json:"str1" binding:"required,min=1,max=100"`
+	Str2  string `json:"str2" binding:"required,min=1,max=100"`
 }
 
 //ToStr for unique key
@@ -39,8 +27,8 @@ func (a postRequest) ToStr() string {
 	return fmt.Sprintf("fizzbuzz|%d|%d|%d|%s|%s", a.Int1, a.Int2, a.Limit, str1, str2)
 }
 
-//ToJSON struct to json
-func (a postRequest) ToJSON() []byte {
+//ToBytes converts struct to bytes
+func (a postRequest) ToBytes() []byte {
 
 	b, err := json.Marshal(a)
 
