@@ -1,6 +1,5 @@
 package fizzbuzz
 
-//postRequest Post request parameters
 type postRequest struct {
 	Int1  int    `json:"int1" binding:"required,gte=1"`
 	Int2  int    `json:"int2" binding:"required,gte=1"`

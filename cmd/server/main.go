@@ -9,7 +9,6 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-// config of server
 type config struct {
 	server   server.Config
 	database database.Config
