@@ -54,9 +54,11 @@ func TestController(t *testing.T) {
 		logger.Info(w.Result())
 		assert.Equal(t, tc.httpStatus, w.Code)
 
-		err := json.Unmarshal([]byte(w.Body.String()), &response)
-		assert.NoError(t, err)
+		if w.Code == 200 {
+			err := json.Unmarshal([]byte(w.Body.String()), &response)
+			assert.NoError(t, err)
 
-		assert.Equal(t, tc.response, response.Result)
+			assert.Equal(t, tc.response, response.Result)
+		}
 	}
 }

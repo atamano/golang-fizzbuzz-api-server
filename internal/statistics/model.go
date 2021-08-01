@@ -2,7 +2,6 @@ package statistics
 
 import "encoding/json"
 
-//FizzbuzzRequestsStats counts requests
 type fizzbuzzRequestsStats struct {
 	ID      int             `json:"id"`
 	Key     string          `json:"key"`

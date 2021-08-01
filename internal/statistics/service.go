@@ -1,8 +1,12 @@
 package statistics
 
-//Service for fizzbuzz
+import (
+	"encoding/json"
+	"fmt"
+)
+
 type Service interface {
-	IncrementRequestCount(rkey string, params []byte) (fizzbuzzRequestsStats, error)
+	IncrementRequestCount(params interface{}) (fizzbuzzRequestsStats, error)
 	GetMostUsedRequest() (fizzbuzzRequestsStats, error)
 }
 
@@ -10,20 +14,25 @@ type service struct {
 	repository Repository
 }
 
-//NewService initialization
 func NewService(repository Repository) Service {
 	return &service{repository}
 }
 
-//StatsRequest interface
+func (s service) IncrementRequestCount(params interface{}) (fizzbuzzRequestsStats, error) {
+	key := fmt.Sprintf("%v", params)
 
-func (s service) IncrementRequestCount(key string, params []byte) (fizzbuzzRequestsStats, error) {
+	b, err := json.Marshal(params)
+	if err != nil {
+		return fizzbuzzRequestsStats{}, err
+	}
+
 	result, err := s.repository.Get(key)
 	if err == nil {
 		result, err = s.repository.Increment(key)
 	} else {
-		result, err = s.repository.Create(key, params)
+		result, err = s.repository.Create(key, b)
 	}
+
 	return result, err
 }
 

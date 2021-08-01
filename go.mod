@@ -13,4 +13,5 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.7.0
+	gopkg.in/go-playground/validator.v9 v9.29.1
 )

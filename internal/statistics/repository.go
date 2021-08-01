@@ -4,7 +4,6 @@ import (
 	"github.com/go-pg/pg/v10/orm"
 )
 
-//Repository for fizzbuzz
 type Repository interface {
 	Increment(key string) (fizzbuzzRequestsStats, error)
 	GetMostUsedRequest() (fizzbuzzRequestsStats, error)
@@ -16,7 +15,6 @@ type repository struct {
 	db orm.DB
 }
 
-//NewRepository initialization
 func NewRepository(db orm.DB) Repository {
 	return repository{db}
 }

@@ -2,7 +2,7 @@ package statistics
 
 type statsMockService struct{}
 
-func (m statsMockService) IncrementRequestCount(key string, params []byte) (fizzbuzzRequestsStats, error) {
+func (m statsMockService) IncrementRequestCount(params interface{}) (fizzbuzzRequestsStats, error) {
 	return fizzbuzzRequestsStats{}, nil
 }
 
