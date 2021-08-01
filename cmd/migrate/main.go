@@ -32,33 +32,28 @@ func newConfig() database.Config {
 }
 
 func main() {
-	flag.Usage = usage
+	flag.Usage = func() {
+		logger.Info(usageText)
+		flag.PrintDefaults()
+		os.Exit(2)
+	}
+
 	flag.Parse()
 
 	config := newConfig()
-
 	db, err := database.Connect(config)
 	if err != nil {
-		exitf(err.Error())
+		logger.Fatal(err.Error())
 	}
+
 	oldVersion, newVersion, err := migrations.Run(db.DB(), flag.Args()...)
 	if err != nil {
-		exitf(err.Error())
+		logger.Fatal(err.Error())
 	}
+
 	if newVersion != oldVersion {
 		logger.Infof("migrated from version %d to %d\n", oldVersion, newVersion)
 	} else {
 		logger.Infof("version is %d\n", oldVersion)
 	}
-}
-
-func usage() {
-	logger.Info(usageText)
-	flag.PrintDefaults()
-	os.Exit(2)
-}
-
-func exitf(s string, args ...interface{}) {
-	logger.Errorf(s, args...)
-	os.Exit(1)
 }

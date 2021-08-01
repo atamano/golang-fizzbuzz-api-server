@@ -2,8 +2,8 @@ package database
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/atamano/fizz-buzz/pkg/logger"
 	"github.com/go-pg/pg/v10"
 )
 
@@ -16,7 +16,7 @@ func (l sqlHook) BeforeQuery(ctx context.Context, e *pg.QueryEvent) (context.Con
 func (l sqlHook) AfterQuery(ctx context.Context, e *pg.QueryEvent) error {
 	query, err := e.FormattedQuery()
 
-	logger.Info(query)
+	fmt.Println(string(query))
 
 	return err
 }
