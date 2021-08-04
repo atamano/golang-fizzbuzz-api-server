@@ -4,9 +4,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/atamano/fizz-buzz/internal/statistics"
-	"github.com/atamano/fizz-buzz/pkg/response"
-	"github.com/atamano/fizz-buzz/pkg/server"
+	"fizzbuzz/internal/statistics"
+	"fizzbuzz/pkg/response"
+	"fizzbuzz/pkg/server"
 )
 
 type controler struct {

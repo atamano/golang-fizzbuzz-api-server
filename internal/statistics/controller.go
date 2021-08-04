@@ -3,8 +3,8 @@ package statistics
 import (
 	"net/http"
 
-	"github.com/atamano/fizz-buzz/pkg/response"
-	"github.com/atamano/fizz-buzz/pkg/server"
+	"fizzbuzz/pkg/response"
+	"fizzbuzz/pkg/server"
 )
 
 type controler struct {

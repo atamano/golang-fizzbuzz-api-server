@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/atamano/fizz-buzz/internal/fizzbuzz"
-	"github.com/atamano/fizz-buzz/internal/statistics"
-	"github.com/atamano/fizz-buzz/pkg/database"
-	"github.com/atamano/fizz-buzz/pkg/logger"
-	"github.com/atamano/fizz-buzz/pkg/server"
+	"fizzbuzz/internal/fizzbuzz"
+	"fizzbuzz/internal/statistics"
+	"fizzbuzz/pkg/database"
+	"fizzbuzz/pkg/logger"
+	"fizzbuzz/pkg/server"
+
 	"github.com/kelseyhightower/envconfig"
 )
 

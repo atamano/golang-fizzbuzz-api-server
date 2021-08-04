@@ -7,9 +7,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/atamano/fizz-buzz/internal/statistics"
-	"github.com/atamano/fizz-buzz/pkg/logger"
-	"github.com/atamano/fizz-buzz/pkg/server"
+	"fizzbuzz/internal/statistics"
+	"fizzbuzz/pkg/logger"
+	"fizzbuzz/pkg/server"
+
 	"github.com/stretchr/testify/assert"
 )
 

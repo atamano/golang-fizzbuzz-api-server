@@ -9,7 +9,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/atamano/fizz-buzz/pkg/logger"
+	"fizzbuzz/pkg/logger"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )

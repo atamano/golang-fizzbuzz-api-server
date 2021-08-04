@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/atamano/fizz-buzz/pkg/logger"
+	"fizzbuzz/pkg/logger"
+
 	"github.com/go-pg/migrations/v8"
 )
 
