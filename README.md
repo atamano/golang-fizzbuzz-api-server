@@ -51,6 +51,20 @@ $ make livereload
 $ make test
 ```
 
+## Try it
+
+```
+curl -d '{"int1": 4, "int2": 2, "limit": 20, "str1": "toto", "str2": "tata"}' localhost:8080/v1/fizzbuzz
+```
+
+```
+curl -d '{"int1": 5, "int2": 3, "limit": 10, "str1": "foo", "str2": "bar"}' localhost:8080/v1/fizzbuzz
+```
+
+```
+curl  localhost:8080/v1/stats
+```
+
 ## Built With
 
 - [Gin](https://github.com/gin-gonic/gin) - Http framework
